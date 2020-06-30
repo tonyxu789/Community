@@ -17,6 +17,10 @@ public class LoggerTests {
 
     @Test
     public void testLoger(){
+
+        // logger test
+        // logger test
+        System.out.println(logger.isDebugEnabled());
         System.out.println(logger.getName());
 
         logger.debug("debug log");
