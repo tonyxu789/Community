@@ -16,4 +16,11 @@ public interface CommunityConstant {
 
     // 记住我超时时间
     long REMEMBERME_EXPIRED_SECONDS = 3600*12*128;
+
+    // 实体类型，帖子
+    int ENTITY_TYPE_POST = 2;
+
+    //实体类型，评论
+    int ENTITY_TYPR_COMMENT = 1;
+
 }
