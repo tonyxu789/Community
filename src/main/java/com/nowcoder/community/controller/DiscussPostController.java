@@ -69,14 +69,51 @@ public class DiscussPostController implements CommunityConstant {
         page.setPath("/discuss/detail" + discussPostId);
         page.setRows(post.getCommentCount());
 
+        // 评论：给帖子的评论
+        // 回复：给评论的评论
         List<Comment> commentlist = commentService.findCommentsByEntity(ENTITY_TYPE_POST, post.getId(), page.getOffset(), page.getLimit());
 
-        List<Map<String, Object>> commentVoList = new ArrayList;
+        // 评论VO列表（viewObject）
+        List<Map<String, Object>> commentVoList = new ArrayList<>();
         if(commentlist != null){
             for(Comment comment:commentlist){
+                // 评论VO
                 Map<String, Object> commentVo = new HashMap<>();
+                // 评论
+                commentVo.put("comment", comment);
+                // 评论作者
+                commentVo.put("user", userService.findUserById(comment.getUserId()));
+
+                // 回复列表
+                List<Comment> replylist = commentService.findCommentsByEntity(ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
+                // 回复的VO列表
+                List<Map<String, Object>> replyVoList = new ArrayList<>();
+                if(replylist != null){
+                    for(Comment reply : replylist){
+                        Map<String, Object> replyVo = new HashMap<>();
+                        // 回复
+                        replyVo.put("reply", reply);
+                        // 作者
+                        replyVo.put("user", userService.findUserById(reply.getUserId()));
+                        // 回复目标
+                        User target = reply.getTargetId() == 0?null:userService.findUserById(reply.getTargetId());
+                        replyVo.put("target", target);
+
+                        replyVoList.add(replyVo);
+                    }
+                }
+
+                commentVo.put("replys", replyVoList);
+
+                // 评论的回复数量
+                int replyCount = commentService.findCommentCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("replyCount", replyCount);
+
+                commentVoList.add(commentVo);
             }
         }
-        return "site/discuss-detail";
+
+        model.addAttribute("comments", commentVoList);
+        return "/site/discuss-detail";
     }
 }
