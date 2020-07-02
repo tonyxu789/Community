@@ -66,7 +66,7 @@ public class DiscussPostController implements CommunityConstant {
 
         // 评论分页信息
         page.setLimit(5);
-        page.setPath("/discuss/detail" + discussPostId);
+        page.setPath("/discuss/detail/" + discussPostId);
         page.setRows(post.getCommentCount());
 
         // 评论：给帖子的评论
