@@ -28,6 +28,6 @@ public interface MessageMapper {
     int insertMessage(Message message);
 
     // 修改消息的状态
-    int updateStatus(List<Integer> ids, int status);
+    int updateStatus(@Param("ids") List<Integer> ids, @Param("status") int status);
 
 }
