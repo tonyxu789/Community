@@ -24,7 +24,7 @@ public class LikeController {
 
     @RequestMapping(path = "/like", method = RequestMethod.POST)
     @ResponseBody
-    public String like(int entityType, int entityId, int entityUserId){
+    public String like(int entityType, int entityId, int entityUserId) {
         User user = hostHolder.getUser();
 
         // 点赞
@@ -32,17 +32,14 @@ public class LikeController {
 
         // 数量
         long likeCount = likeService.findEntityLikeCount(entityType, entityId);
-
         // 状态
-        int likeStatus = (int) likeService.findEntityLikeStatus(user.getId(), entityType, entityId);
-
-        // 返回结果
+        int likeStatus = likeService.findEntityLikeStatus(user.getId(), entityType, entityId);
+        // 返回的结果
         Map<String, Object> map = new HashMap<>();
         map.put("likeCount", likeCount);
         map.put("likeStatus", likeStatus);
 
         return CommunityUtil.getJSONString(0, null, map);
-
     }
 
 }
